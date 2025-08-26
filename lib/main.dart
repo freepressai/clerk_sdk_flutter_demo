@@ -1,10 +1,14 @@
+import 'dart:async';
 import 'dart:io';
 
+import 'package:clerk_auth/clerk_auth.dart' as clerk;
 import 'package:clerk_flutter/clerk_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+Future<void> main() async {
+  await clerk.setUpLogging(printer: const LogPrinter());
+
   const publishableKey = String.fromEnvironment('publishable_key');
   if (publishableKey.isEmpty) {
     if (kDebugMode) {
@@ -49,5 +53,16 @@ class ExampleApp extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+/// Log Printer
+class LogPrinter extends clerk.Printer {
+  /// Constructs an instance of [LogPrinter]
+  const LogPrinter();
+
+  @override
+  void print(String output) {
+    Zone.root.print(output);
   }
 }
